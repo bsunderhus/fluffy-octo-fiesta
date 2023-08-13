@@ -1,40 +1,65 @@
-use tracing::debug;
-
+// use tracing::debug;
 use swc_core::{
     ecma::{
-        ast::*,
+        ast::{Expr, Program, TaggedTpl, Tpl},
         transforms::testing::test,
-        visit::{as_folder, FoldWith, VisitMut, VisitMutWith},
+        visit::{Fold, FoldWith},
     },
     plugin::{plugin_transform, proxies::TransformPluginProgramMetadata},
 };
 
-pub struct TransformVisitor;
+pub struct FoldDeIndentTaggedTemplate;
 
-impl VisitMut for TransformVisitor {
-    fn visit_mut_tagged_tpl(&mut self, node: &mut TaggedTpl) {
-        debug!("TaggedTpl: {:?}", node);
-        node.visit_mut_children_with(self);
+impl Fold for FoldDeIndentTaggedTemplate {
+    fn fold_expr(&mut self, node: Expr) -> Expr {
+        let expr = node.fold_children_with(self);
+        if let Expr::TaggedTpl(mut tagged_tpl) = expr {
+            if let Some(ident) = tagged_tpl.tag.as_ident() {
+                if ident.sym == String::from("deIndent") {
+                    tagged_tpl.tpl.quasis.iter_mut().for_each(|tpl_element| {
+                        tpl_element.raw = de_indent(&tpl_element.raw).into();
+                    });
+                    return Expr::Tpl(*tagged_tpl.tpl);
+                }
+            }
+            return Expr::TaggedTpl(tagged_tpl);
+        }
+        expr
     }
+}
+
+fn de_indent(input: &str) -> String {
+    let mut result = String::new();
+    for line in input.lines() {
+        let trimmed_line = line.trim_start();
+        result.push_str(trimmed_line);
+        if !trimmed_line.is_empty() {
+            result.push('\n');
+        }
+    }
+    if result.ends_with('\n') {
+        result.pop();
+    }
+    result
 }
 
 #[plugin_transform]
 pub fn process_transform(program: Program, _metadata: TransformPluginProgramMetadata) -> Program {
-    program.fold_with(&mut as_folder(TransformVisitor))
+    program.fold_with(&mut FoldDeIndentTaggedTemplate)
 }
 
 test!(
     Default::default(),
-    |_| as_folder(TransformVisitor),
-    it_should_transform_bin_expr,
+    |_| FoldDeIndentTaggedTemplate,
+    it_should_transform_tagged_template,
     // Input
     r#"deIndent`
         Hello world!,
-        this is me.
+        this is ${name}.
+        how are you?
     `"#,
     // Output
-    r#"deIndent`
-        Hello world!,
-        this is me.
-    `"#
+    r#"`Hello world!,
+this is ${name}.
+how are you?`"#
 );
