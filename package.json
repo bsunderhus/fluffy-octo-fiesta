@@ -1,4 +1,15 @@
 {
-  "name": "fluffy-octo-fiesta",
-  "packageManager": "yarn@3.6.1"
+  "name": "@bsunderhus/swc-plugin-de-indent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SWC plugin for removing indentation of template literal",
+  "author": "Bernardo Sunderhus <bernardo.sunderhus@gmail.com>",
+  "license": "ISC",
+  "keywords": [
+    "swc-plugin"
+  ],
+  "main": "target/wasm32-wasi/release/my_first_plugin.wasm",
+  "scripts": {
+    "build": "cargo build-wasi --release"
+  }
 }

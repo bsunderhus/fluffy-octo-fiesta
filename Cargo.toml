@@ -1,0 +1,22 @@
+[package]
+authors = ["Bernardo Sunderhus <bernardo.sunderhus@gmail.com>"]
+description = "SWC plugin for removing indentation of template literal"
+edition = "2021"
+license = "Apache-2.0"
+name = "swc_plugin_de_indent"
+publish = false
+version = "0.1.0"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[profile.release]
+lto = true
+
+[dependencies]
+serde_json = "1.0.79"
+swc_core = { version = "0.79.*", features = ["ecma_plugin_transform", "common"] }
+tracing = "0.1.37"
+
+[dev-dependencies]
+testing = "0.33.21"
