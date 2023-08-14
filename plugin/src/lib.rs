@@ -28,6 +28,20 @@ impl Fold for FoldDeIndentTaggedTemplate {
     }
 }
 
+fn get_de_indented_tpl_from_expr(expr: &mut Expr) -> Option<Tpl> {
+    if let Expr::TaggedTpl(mut tagged_tpl) = expr {
+        if let Some(ident) = tagged_tpl.tag.as_ident() {
+            if ident.sym == String::from("deIndent") {
+                tagged_tpl.tpl.quasis.iter_mut().for_each(|tpl_element| {
+                    tpl_element.raw = de_indent(&tpl_element.raw).into();
+                });
+                return Some(*tagged_tpl.tpl);
+            }
+        }
+    }
+    None
+}
+
 fn de_indent(input: &str) -> String {
     let mut result = String::new();
     for line in input.lines() {
