@@ -17,6 +17,7 @@ lto = true
 serde_json = "1.0.79"
 swc_core = { version = "0.79.*", features = ["ecma_plugin_transform", "common"] }
 tracing = "0.1.37"
+tracing-test = "0.2.4"
 
 [dev-dependencies]
 testing = "0.33.21"
