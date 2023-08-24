@@ -1,0 +1,4 @@
+
+					@fluentui/react-dialog: a Dialog should have at least one focusable element inside DialogSurface.
+					Please add at least a close button either on \`DialogTitle\` action slot or inside \`DialogActions\`.
+				

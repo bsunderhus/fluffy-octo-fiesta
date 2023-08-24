@@ -1,0 +1,5 @@
+
+					PortalCompatProvider: "useThemeClassName()" hook returned an empty string
+					=============================================
+					Make sure that PortalCompatProvider is rendered inside FluentProvider as a child.
+				

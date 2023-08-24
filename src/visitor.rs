@@ -1,4 +1,4 @@
-use crate::DeIndent;
+use crate::{DeIndent, IndentStyle};
 use serde::Deserialize;
 use swc_core::{
     common::comments::{CommentKind, Comments},
@@ -14,6 +14,8 @@ use tracing::debug;
 pub struct DeIndentVisitorConfig {
     #[serde(default = "DeIndentVisitorConfig::default_tag")]
     pub tag: String,
+    #[serde(default)]
+    pub indent_style: IndentStyle,
 }
 
 impl DeIndentVisitorConfig {
@@ -28,6 +30,7 @@ where
 {
     comments: C,
     tag: String,
+    indent_style: IndentStyle,
 }
 
 impl<C> DeIndentVisitor<C>
@@ -38,6 +41,7 @@ where
         Self {
             comments,
             tag: config.tag,
+            indent_style: config.indent_style,
         }
     }
     pub fn as_folder(comments: C, config: DeIndentVisitorConfig) -> Folder<Self> {
@@ -76,7 +80,7 @@ where
                     .map(|quasi| quasi.raw.to_string())
                     .collect::<Vec<_>>()
                     .join(magic_string)
-                    .de_indent()
+                    .de_indent(self.indent_style)
                     .split(magic_string)
                     .enumerate()
                     .for_each(|(index, de_indented_raw)| {

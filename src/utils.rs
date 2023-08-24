@@ -1,10 +1,34 @@
+use serde::Deserialize;
+
+#[derive(Deserialize, Debug, Clone, Copy)]
+pub enum IndentStyle {
+    #[serde(rename = "tab")]
+    Tab,
+    #[serde(rename = "space")]
+    Space,
+}
+impl Default for IndentStyle {
+    fn default() -> Self {
+        IndentStyle::Space
+    }
+}
+
+impl Into<char> for IndentStyle {
+    fn into(self) -> char {
+        match self {
+            IndentStyle::Tab => '\t',
+            IndentStyle::Space => ' ',
+        }
+    }
+}
+
 pub trait DeIndent {
-    fn de_indent(&self) -> Self;
+    fn de_indent(&self, indent_style: IndentStyle) -> Self;
 }
 
 impl DeIndent for String {
-    fn de_indent(&self) -> Self {
-        let indentation = get_indentation(self);
+    fn de_indent(&self, indent_style: IndentStyle) -> Self {
+        let indentation = get_indentation(self, indent_style);
 
         let mut input = self.lines().peekable();
 
@@ -19,7 +43,7 @@ impl DeIndent for String {
             if !de_indented_input.is_empty() {
                 de_indented_input.push('\n');
             }
-            de_indented_input.push_str(&trim_start_until(line, indentation))
+            de_indented_input.push_str(&trim_start_until(line, indentation, indent_style))
         }
         de_indented_input
     }
@@ -27,23 +51,25 @@ impl DeIndent for String {
 
 /// Get the indentation number of a string.
 /// This implementation ignores tabs.
-pub fn get_indentation(input: &str) -> usize {
+pub fn get_indentation(input: &str, indent_style: IndentStyle) -> usize {
     if input.is_empty() {
         return 0;
     }
-    let indentation = input.lines().fold(None, |smallest_indentation, line| {
-        if let Some(indentation) = get_line_indentation(line) {
-            let Some(smallest_indentation) = smallest_indentation else {
-                return Some(indentation);
-            };
-            if indentation < smallest_indentation {
-                return Some(indentation);
-            } else {
-                return Some(smallest_indentation);
+    let indentation = input
+        .lines()
+        .fold(None, |smallest_indentation, line: &str| {
+            if let Some(indentation) = get_line_indentation(line, indent_style) {
+                let Some(smallest_indentation) = smallest_indentation else {
+                    return Some(indentation);
+                };
+                if indentation < smallest_indentation {
+                    return Some(indentation);
+                } else {
+                    return Some(smallest_indentation);
+                }
             }
-        }
-        smallest_indentation
-    });
+            smallest_indentation
+        });
     indentation.unwrap_or(0)
 }
 
@@ -54,63 +80,57 @@ mod get_indentation_tests {
     #[test]
     fn test_get_indentation_empty_input() {
         let input = "";
-        let expected_output = 0;
-        assert_eq!(get_indentation(input), expected_output);
+        assert_eq!(get_indentation(input, IndentStyle::Space), 0);
     }
 
     #[test]
     fn test_get_indentation_single_line_no_indentation() {
         let input = "hello world";
-        let expected_output = 0;
-        assert_eq!(get_indentation(input), expected_output);
+        assert_eq!(get_indentation(input, IndentStyle::Space), 0);
     }
 
     #[test]
     fn test_get_indentation_single_line_with_indentation() {
         let input = "    hello world";
-        let expected_output = 4;
-        assert_eq!(get_indentation(input), expected_output);
+        assert_eq!(get_indentation(input, IndentStyle::Space), 4);
     }
 
     #[test]
     fn test_get_indentation_multiple_lines_no_indentation() {
         let input = "hello world\nhow are you?";
-        let expected_output = 0;
-        assert_eq!(get_indentation(input), expected_output);
+        assert_eq!(get_indentation(input, IndentStyle::Space), 0);
     }
 
     #[test]
     fn test_get_indentation_multiple_lines_with_indentation() {
         let input = "     hello world\n    how are you?";
-        let expected_output = 4;
-        assert_eq!(get_indentation(input), expected_output);
+        assert_eq!(get_indentation(input, IndentStyle::Space), 4);
     }
 
     #[test]
     fn test_get_indentation_mixed_indentation() {
         let input = "    hello world\nhow are you?";
-        let expected_output = 0;
-        assert_eq!(get_indentation(input), expected_output);
+        assert_eq!(get_indentation(input, IndentStyle::Space), 0);
     }
 
     #[test]
     fn test_get_indentation_only_indentation() {
         let input = "    \n    \n    ";
-        let expected_output = 0;
-        assert_eq!(get_indentation(input), expected_output);
+        assert_eq!(get_indentation(input, IndentStyle::Space), 0);
     }
 }
 
 /// Get the indentation number of a line.
 /// a line is supposed to be a string without a newline character, or with a trailing newline character.
 /// This implementation ignores tabs.
-pub fn get_line_indentation(line: &str) -> Option<usize> {
+pub fn get_line_indentation(line: &str, indent_style: IndentStyle) -> Option<usize> {
     if line.is_empty() {
         return None;
     }
+    let indent_style: char = indent_style.into();
     let mut indentation = 0;
     for char in line.chars() {
-        if char == ' ' {
+        if char == indent_style {
             indentation += 1;
         } else {
             break;
@@ -130,49 +150,54 @@ mod get_line_indentation_tests {
     #[test]
     fn test_get_line_indentation_empty_line() {
         let line = "";
-        assert_eq!(get_line_indentation(line), None);
+        assert_eq!(get_line_indentation(line, IndentStyle::Space), None);
     }
 
     #[test]
     fn test_get_line_indentation_only_spaces() {
         let line = "    ";
-        assert_eq!(get_line_indentation(line), None);
+        assert_eq!(get_line_indentation(line, IndentStyle::Space), None);
     }
 
     #[test]
     fn test_get_line_indentation_no_indentation() {
         let line = "hello world";
-        let expected_output = 0;
-        assert_eq!(get_line_indentation(line), Some(expected_output));
+        assert_eq!(get_line_indentation(line, IndentStyle::Space), Some(0));
     }
 
     #[test]
     fn test_get_line_indentation_with_text() {
         let line = "    hello world";
-        let expected_output = 4;
-        assert_eq!(get_line_indentation(line), Some(expected_output));
+        assert_eq!(get_line_indentation(line, IndentStyle::Space), Some(4));
     }
 
     #[test]
     fn test_get_line_indentation_with_trailing_newline() {
         let line = "    hello world\n";
-        let expected_output = 4;
-        assert_eq!(get_line_indentation(line), Some(expected_output));
+        assert_eq!(get_line_indentation(line, IndentStyle::Space), Some(4));
+    }
+    #[test]
+    fn test_get_line_indentation_with_tab() {
+        assert_eq!(
+            get_line_indentation("\t\thello world\n", IndentStyle::Tab),
+            Some(2)
+        );
     }
 }
 
 /// Trim the start of a string until a certain amount of characters have been trimmed.
 /// It stops trimming when it encounters a non-whitespace character.
-pub fn trim_start_until(input: &str, amount: usize) -> String {
+pub fn trim_start_until(input: &str, amount: usize, indent_style: IndentStyle) -> String {
     let mut result = String::new();
     let mut trimmed = 0;
 
     if input == "\n" {
         return input.to_string();
     }
+    let indent_style: char = indent_style.into();
 
     for (index, char) in input.chars().enumerate() {
-        if !char.is_whitespace() {
+        if char != indent_style {
             let (_, rest) = input.split_at(index);
             result.push_str(rest);
             return result;
@@ -196,7 +221,10 @@ mod trim_start_until_tests {
         let input = "";
         let amount = 5;
         let expected_output = "";
-        assert_eq!(trim_start_until(input, amount), expected_output);
+        assert_eq!(
+            trim_start_until(input, amount, IndentStyle::Space),
+            expected_output
+        );
     }
 
     #[test]
@@ -204,7 +232,10 @@ mod trim_start_until_tests {
         let input = "hello world";
         let amount = 5;
         let expected_output = "hello world";
-        assert_eq!(trim_start_until(input, amount), expected_output);
+        assert_eq!(
+            trim_start_until(input, amount, IndentStyle::Space),
+            expected_output
+        );
     }
 
     #[test]
@@ -212,7 +243,10 @@ mod trim_start_until_tests {
         let input = "     ";
         let amount = 5;
         let expected_output = "";
-        assert_eq!(trim_start_until(input, amount), expected_output);
+        assert_eq!(
+            trim_start_until(input, amount, IndentStyle::Space),
+            expected_output
+        );
     }
 
     #[test]
@@ -220,7 +254,10 @@ mod trim_start_until_tests {
         let input = "     hello world";
         let amount = 5;
         let expected_output = "hello world";
-        assert_eq!(trim_start_until(input, amount), expected_output);
+        assert_eq!(
+            trim_start_until(input, amount, IndentStyle::Space),
+            expected_output
+        );
     }
 
     #[test]
@@ -228,7 +265,10 @@ mod trim_start_until_tests {
         let input = "     hello     world";
         let amount = 5;
         let expected_output = "hello     world";
-        assert_eq!(trim_start_until(input, amount), expected_output);
+        assert_eq!(
+            trim_start_until(input, amount, IndentStyle::Space),
+            expected_output
+        );
     }
 
     #[test]
@@ -236,7 +276,19 @@ mod trim_start_until_tests {
         let input = "\n";
         let amount = 5;
         let expected_output = "\n";
-        assert_eq!(trim_start_until(input, amount), expected_output);
+        assert_eq!(
+            trim_start_until(input, amount, IndentStyle::Space),
+            expected_output
+        );
+    }
+
+    #[test]
+    fn test_trim_start_tab() {
+        assert_eq!(trim_start_until("\t\t", 2, IndentStyle::Tab), "");
+        assert_eq!(trim_start_until("\t\t", 3, IndentStyle::Tab), "");
+        assert_eq!(trim_start_until("\t\t", 1, IndentStyle::Tab), "\t");
+        assert_eq!(trim_start_until("\t\t", 0, IndentStyle::Tab), "\t\t");
+        assert_eq!(trim_start_until(" \t\t", 1, IndentStyle::Tab), " \t\t");
     }
 }
 
@@ -247,7 +299,6 @@ mod lines_tests {
     fn test_lines() {
         let input = "\n1\n2\n\n3\n\n";
         let lines = input.lines().collect::<Vec<&str>>();
-        println!("DEBUG:::: lines: {:?}", &lines);
         assert_eq!(lines.len(), 6);
     }
 }

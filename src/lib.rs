@@ -10,7 +10,7 @@ use swc_core::{
     },
 };
 
-pub use utils::DeIndent;
+pub use utils::{DeIndent, IndentStyle};
 pub use visitor::{DeIndentVisitor, DeIndentVisitorConfig};
 
 #[plugin_transform]

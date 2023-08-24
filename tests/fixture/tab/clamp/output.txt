@@ -1,0 +1,4 @@
+"min" value "${min}" is greater than "max" value "${max}".
+"min" must be less than or equal to "max".
+Returning value "${value}".
+${error.stack}

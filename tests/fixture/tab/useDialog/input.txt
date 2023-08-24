@@ -1,0 +1,4 @@
+
+				Dialog must contain at least one child <DialogSurface/>,
+				and at most two children <DialogTrigger/> <DialogSurface/> (in this order)
+			
