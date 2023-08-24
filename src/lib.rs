@@ -1,3 +1,4 @@
+#![feature(extract_if)]
 mod utils;
 mod visitor;
 
@@ -9,11 +10,17 @@ use swc_core::{
     },
 };
 
-pub use utils::de_indent;
-pub use visitor::DeIndentVisitor;
+pub use utils::DeIndent;
+pub use visitor::{DeIndentVisitor, DeIndentVisitorConfig};
 
 #[plugin_transform]
-fn process_transform(mut program: Program, _metadata: TransformPluginProgramMetadata) -> Program {
-    program.visit_mut_with(&mut DeIndentVisitor::new(PluginCommentsProxy));
+fn process_transform(mut program: Program, metadata: TransformPluginProgramMetadata) -> Program {
+    let config = serde_json::from_str::<DeIndentVisitorConfig>(
+        &metadata
+            .get_transform_plugin_config()
+            .expect("failed to get plugin config for de-indent"),
+    )
+    .expect("invalid config for de-indent");
+    program.visit_mut_with(&mut DeIndentVisitor::new(PluginCommentsProxy, config));
     program
 }

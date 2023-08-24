@@ -1,0 +1,3 @@
+WARNING: This file has multiple exports, please fix (${this.foundExports}):
+${file.opts.filename}
+Having multiple exports in a story causes issues for the CodeSandbox examples. This rule will be enforced in the future.

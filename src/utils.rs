@@ -1,42 +1,28 @@
-// pub fn de_indent(input: &str) -> String {
-//     let indentation = get_indentation(input);
+pub trait DeIndent {
+    fn de_indent(&self) -> Self;
+}
 
-//     let mut input = input
-//         .lines()
-//         .map(|line| trim_start_until(line, indentation))
-//         .collect::<Vec<String>>();
-//     if let Some(first) = input.first() {
-//         if first.trim_start().is_empty() {
-//             input.remove(0);
-//         }
-//     }
-//     if let Some(last) = input.last() {
-//         if last.trim_start().is_empty() {
-//             input.pop();
-//         }
-//     }
-//     input.join("\n")
-// }
+impl DeIndent for String {
+    fn de_indent(&self) -> Self {
+        let indentation = get_indentation(self);
 
-pub fn de_indent(input: &str) -> String {
-    let indentation = get_indentation(input);
+        let mut input = self.lines().peekable();
 
-    let mut input = input.lines().peekable();
+        let mut de_indented_input = String::new();
 
-    let mut de_indented_input = String::new();
-
-    while let Some(line) = input.next() {
-        if line.trim_start().is_empty() && (de_indented_input.is_empty() || input.peek().is_none())
-        {
-            continue;
+        while let Some(line) = input.next() {
+            if line.trim_start().is_empty()
+                && (de_indented_input.is_empty() || input.peek().is_none())
+            {
+                continue;
+            }
+            if !de_indented_input.is_empty() {
+                de_indented_input.push('\n');
+            }
+            de_indented_input.push_str(&trim_start_until(line, indentation))
         }
-        if !de_indented_input.is_empty() {
-            de_indented_input.push('\n');
-        }
-        de_indented_input.push_str(&trim_start_until(line, indentation))
+        de_indented_input
     }
-
-    de_indented_input
 }
 
 /// Get the indentation number of a string.
@@ -45,17 +31,20 @@ pub fn get_indentation(input: &str) -> usize {
     if input.is_empty() {
         return 0;
     }
-    input
-        .lines()
-        .fold(usize::MAX, |smallest_indentation, line| {
-            let indentation = get_line_indentation(line);
-            if indentation < smallest_indentation && indentation != 0 {
-                indentation
+    let indentation = input.lines().fold(None, |smallest_indentation, line| {
+        if let Some(indentation) = get_line_indentation(line) {
+            let Some(smallest_indentation) = smallest_indentation else {
+                return Some(indentation);
+            };
+            if indentation < smallest_indentation {
+                return Some(indentation);
             } else {
-                smallest_indentation
+                return Some(smallest_indentation);
             }
-        })
-        .clamp(0, usize::MAX)
+        }
+        smallest_indentation
+    });
+    indentation.unwrap_or(0)
 }
 
 #[cfg(test)]
@@ -115,9 +104,9 @@ mod get_indentation_tests {
 /// Get the indentation number of a line.
 /// a line is supposed to be a string without a newline character, or with a trailing newline character.
 /// This implementation ignores tabs.
-pub fn get_line_indentation(line: &str) -> usize {
+pub fn get_line_indentation(line: &str) -> Option<usize> {
     if line.is_empty() {
-        return 0;
+        return None;
     }
     let mut indentation = 0;
     for char in line.chars() {
@@ -128,9 +117,9 @@ pub fn get_line_indentation(line: &str) -> usize {
         }
     }
     if indentation == line.len() {
-        0
+        None
     } else {
-        indentation
+        Some(indentation)
     }
 }
 
@@ -141,36 +130,34 @@ mod get_line_indentation_tests {
     #[test]
     fn test_get_line_indentation_empty_line() {
         let line = "";
-        let expected_output = 0;
-        assert_eq!(get_line_indentation(line), expected_output);
+        assert_eq!(get_line_indentation(line), None);
     }
 
     #[test]
     fn test_get_line_indentation_only_spaces() {
         let line = "    ";
-        let expected_output = 0;
-        assert_eq!(get_line_indentation(line), expected_output);
+        assert_eq!(get_line_indentation(line), None);
     }
 
     #[test]
     fn test_get_line_indentation_no_indentation() {
         let line = "hello world";
         let expected_output = 0;
-        assert_eq!(get_line_indentation(line), expected_output);
+        assert_eq!(get_line_indentation(line), Some(expected_output));
     }
 
     #[test]
     fn test_get_line_indentation_with_text() {
         let line = "    hello world";
         let expected_output = 4;
-        assert_eq!(get_line_indentation(line), expected_output);
+        assert_eq!(get_line_indentation(line), Some(expected_output));
     }
 
     #[test]
     fn test_get_line_indentation_with_trailing_newline() {
         let line = "    hello world\n";
         let expected_output = 4;
-        assert_eq!(get_line_indentation(line), expected_output);
+        assert_eq!(get_line_indentation(line), Some(expected_output));
     }
 }
 

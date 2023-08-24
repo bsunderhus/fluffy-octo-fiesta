@@ -1,5 +1,0 @@
-This is a multiline comments
-  It has empty first line
-                
-    it has 4 whitespaces of useless indentation
-    and it also has a empty last line

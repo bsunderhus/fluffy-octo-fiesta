@@ -1,0 +1,2 @@
+Passed React.SyntheticEvent does not contain ".dispatchConfig" or "._reactName".
+This should not happen, please report it to https://github.com/microsoft/fluentui

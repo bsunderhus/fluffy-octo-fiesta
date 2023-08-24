@@ -1,0 +1,7 @@
+
+    This is some weird case
+      This is some weird case
+        This is some weird case
+
+        indentation equals to 4
+        

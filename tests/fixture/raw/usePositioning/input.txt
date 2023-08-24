@@ -1,0 +1,5 @@
+
+            <Popper>: ^ this node contains "autoFocus" prop on a React element. This can break the initial positioning of an element and cause a window jump effect. This issue occurs because React polyfills "autoFocus" behavior to solve inconsistencies between different browsers: https://github.com/facebook/react/issues/11851#issuecomment-351787078
+            However, ".focus()" in this case occurs before any other React effects will be executed (React.useEffect(), componentDidMount(), etc.) and we can not prevent this behavior. If you really want to use "autoFocus" please add "position: fixed" to styles of the element that is wrapped by "Popper". In general, it's not recommended to use "autoFocus" as it may break accessibility aspects: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/master/docs/rules/no-autofocus.md
+            We suggest to use the "trapFocus" prop on Fluent components or a catch "ref" and then use "ref.current.focus" in React.useEffect(): https://reactjs.org/docs/refs-and-the-dom.html#adding-a-ref-to-a-dom-element
+          
