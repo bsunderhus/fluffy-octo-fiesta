@@ -5,7 +5,7 @@ use swc_plugin_de_indent::{DeIndent, IndentStyle};
 #[cfg(test)]
 mod space_tests {
     use super::*;
-    #[testing::fixture("tests/fixture/space/**/input.txt")]
+    #[testing::fixture("tests/fixture/raw/space/**/input.txt")]
     fn fixture_space(input: PathBuf) {
         let input_str = fs::read_to_string(&input).expect("Error in reading the input file");
         let output_str = fs::read_to_string(&input.parent().unwrap().join("output.txt"))
@@ -17,7 +17,7 @@ mod space_tests {
 #[cfg(test)]
 mod tab_tests {
     use super::*;
-    #[testing::fixture("tests/fixture/tab/**/input.txt")]
+    #[testing::fixture("tests/fixture/raw/tab/**/input.txt")]
     fn fixture_tab(input: PathBuf) {
         let input_str = fs::read_to_string(&input).expect("Error in reading the input file");
         let output_str = fs::read_to_string(&input.parent().unwrap().join("output.txt"))

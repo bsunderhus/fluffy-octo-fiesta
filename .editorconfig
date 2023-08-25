@@ -12,6 +12,6 @@ indent_size = 2
 [*.txt]
 insert_final_newline = false
 
-[tests/fixture/tab/**/*.txt]
+[tests/fixture/**/tab/**/*]
 indent_style = tab
 indent_size = 2
