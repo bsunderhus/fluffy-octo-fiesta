@@ -1,4 +1,4 @@
-use crate::{DeIndent, IndentStyle};
+use crate::*;
 use serde::Deserialize;
 use swc_core::{
     common::comments::{CommentKind, Comments},
@@ -7,7 +7,6 @@ use swc_core::{
         visit::{as_folder, Folder, VisitMut, VisitMutWith},
     },
 };
-use tracing::debug;
 
 #[derive(Debug, Default, Clone, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -54,7 +53,6 @@ where
     C: Comments,
 {
     fn visit_mut_tpl(&mut self, tpl: &mut Tpl) {
-        debug!("tag: {}", self.tag);
         tpl.visit_mut_children_with(self);
 
         if self.comments.has_leading(tpl.span.lo()) {

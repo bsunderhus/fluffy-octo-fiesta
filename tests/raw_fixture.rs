@@ -1,6 +1,5 @@
 use std::{fs, path::PathBuf};
-
-use swc_plugin_de_indent::{DeIndent, IndentStyle};
+use swc_plugin_de_indent_template_literal::*;
 
 #[cfg(test)]
 mod space_tests {

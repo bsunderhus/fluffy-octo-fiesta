@@ -1548,7 +1548,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "swc_plugin_de_indent"
+name = "swc_plugin_de_indent_template_literal"
 version = "0.1.0"
 dependencies = [
  "serde",

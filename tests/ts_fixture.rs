@@ -1,8 +1,7 @@
 use std::path::PathBuf;
-
 use swc_core::ecma::transforms::testing::test_fixture;
 use swc_ecma_parser::{Syntax, TsConfig};
-use swc_plugin_de_indent::DeIndentVisitor;
+use swc_plugin_de_indent_template_literal::*;
 
 #[cfg(test)]
 mod space_tests {
