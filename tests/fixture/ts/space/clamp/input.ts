@@ -5,7 +5,7 @@ export const clamp = (value: number, min?: number, max?: number): number => {
       const error = new Error();
       if (process.env.NODE_ENV !== "production") {
         // eslint-disable-next-line no-console
-        console.error(/** @swc-de-indent */ `
+        console.error(/*#__DE-INDENT__*/ `
           "min" value "${min}" is greater than "max" value "${max}".
           "min" must be less than or equal to "max".
           Returning value "${value}".

@@ -80,7 +80,7 @@ export const useFluentProviderThemeStyleTag = (
 
         if (providerElements.length > elementsCount) {
           // eslint-disable-next-line no-console
-          console.error(/** @swc-de-indent */ `
+          console.error(/** #__DE-INDENT__ */ `
             @fluentui/react-provider: There are conflicting ids in your DOM. Please make sure that you configured your application properly. 
   
             Configuration guide: https://aka.ms/fluentui-conflicting-ids

@@ -45,7 +45,7 @@ export function removeStorybookParameters(
       if (this.foundExports > 1) {
         console.warn(
           "\n\x1b[33m%s\x1b[0m",
-          /** @swc-de-indent */ `
+          /** #__DE-INDENT__ */ `
             WARNING: This file has multiple exports, please fix (${this.foundExports}):
             ${file.opts.filename}
             Having multiple exports in a story causes issues for the CodeSandbox examples. This rule will be enforced in the future.

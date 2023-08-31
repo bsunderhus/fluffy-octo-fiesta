@@ -19,7 +19,7 @@ pub struct DeIndentVisitorConfig {
 
 impl DeIndentVisitorConfig {
     fn default_tag() -> String {
-        "@swc-de-indent".to_string()
+        "#__DE-INDENT__".to_string()
     }
 }
 
@@ -64,7 +64,11 @@ where
             let extracted_comments = comments
                 .extract_if(|comment| {
                     comment.kind == CommentKind::Block
-                        && comment.text.to_string().trim().trim_start_matches("* ") == &self.tag
+                        && comment
+                            .text
+                            .to_string()
+                            .trim_matches(|char: char| char.is_whitespace() || char == '*')
+                            == &self.tag
                 })
                 .collect::<Vec<_>>();
 

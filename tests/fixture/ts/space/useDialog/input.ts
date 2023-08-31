@@ -95,7 +95,7 @@ function childrenToTriggerAndContent(
   if (process.env.NODE_ENV !== "production") {
     if (childrenArray.length !== 1 && childrenArray.length !== 2) {
       // eslint-disable-next-line no-console
-      console.warn(/** @swc-de-indent */ `
+      console.warn(/** #__DE-INDENT__ */ `
         Dialog must contain at least one child <DialogSurface/>,
         and at most two children <DialogTrigger/> <DialogSurface/> (in this order)
       `);

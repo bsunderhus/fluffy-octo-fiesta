@@ -42,7 +42,7 @@ export const useInput_unstable = (
 			appearance === "filled-lighter-shadow")
 	) {
 		// eslint-disable-next-line no-console
-		console.error(/** @swc-de-indent */ `
+		console.error(/** #__DE-INDENT__ */ `
 			The 'filled-darker-shadow' and 'filled-lighter-shadow' appearances are deprecated and will be removed in the future.
 		`);
 	}

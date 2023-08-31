@@ -8,7 +8,7 @@ very useful for logging errors and warns.
 ```js
 // BEFORE
 function someFunction() {
-  console.log(/** @swc-de-indent */ `
+  console.log(/** #__DE-INDENT__ */ `
     <div>
       <p>hello</p>
     </div>
@@ -80,10 +80,10 @@ example:
 
 ##### `tag`
 
-If you want to use a custom tag instead of `@swc-de-indent`, you can set `tag` to your custom tag.
+If you want to use a custom tag instead of `#__DE-INDENT__`, you can set `tag` to your custom tag.
 
 - Type: `string`
-- Default: `@swc-de-indent`
+- Default: `#__DE-INDENT__`
 - Valid values: any string
 
 example:

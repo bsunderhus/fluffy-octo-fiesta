@@ -26,7 +26,7 @@ export function useFocusFirstElement(
 			dialogRef.current?.focus(); // https://github.com/microsoft/fluentui/issues/25150
 			if (process.env.NODE_ENV !== "production") {
 				// eslint-disable-next-line no-console
-				console.warn(/** @swc-de-indent */ `
+				console.warn(/** #__DE-INDENT__ */ `
 					@fluentui/react-dialog: a Dialog should have at least one focusable element inside DialogSurface.
 					Please add at least a close button either on \`DialogTitle\` action slot or inside \`DialogActions\`.
 				`);

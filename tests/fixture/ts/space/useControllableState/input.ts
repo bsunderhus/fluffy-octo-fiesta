@@ -111,7 +111,7 @@ const useIsControlled = <V>(
           : "undefined to a defined";
 
         // eslint-disable-next-line no-console
-        console.error(/** @swc-de-indent */ `
+        console.error(/** #__DE-INDENT__ */ `
           A component is changing ${controlWarning}. This is likely caused by the value changing from ${undefinedWarning} value, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://reactjs.org/link/controlled-components ${error.stack}
         `);
       }

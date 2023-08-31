@@ -35,7 +35,7 @@ export const PortalCompatProvider: React.FC<{
         React.useEffect(()=>{
             if (themeClassName === "") {
                 // eslint-disable-next-line no-console
-                console.warn(/** @swc-de-indent */ /** testando */ `
+                console.warn(/* #__DE-INDENT__ */ /** testando */ `
           PortalCompatProvider: "useThemeClassName()" hook returned an empty string
           =============================================
           Make sure that PortalCompatProvider is rendered inside FluentProvider as a child.

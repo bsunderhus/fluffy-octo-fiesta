@@ -104,7 +104,7 @@ export function resolveShorthand<
   ) {
     // TODO: would be nice to have a link to slot documentation in this error message
     // eslint-disable-next-line no-console
-    console.error(/** @swc-de-indent  */ `
+    console.error(/** #__DE-INDENT__  */ `
       [slot.resolveShorthand]: A slot got invalid value "${value}" (${typeof value}).
       A valid value is a slot shorthand or slot properties object.
       Slot shorthands can be strings, numbers, arrays or JSX elements

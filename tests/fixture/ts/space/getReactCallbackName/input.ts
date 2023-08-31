@@ -47,7 +47,7 @@ export function getReactCallbackName(
 
   if (process.env.NODE_ENV !== "production") {
     // eslint-disable-next-line no-console
-    console.error(/** @swc-de-indent */ `
+    console.error(/**#__DE-INDENT__*/ `
       Passed React.SyntheticEvent does not contain ".dispatchConfig" or "._reactName".
       This should not happen, please report it to https://github.com/microsoft/fluentui
     `);

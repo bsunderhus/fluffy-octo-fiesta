@@ -77,7 +77,7 @@ export const useFluentProvider_unstable = (
 		React.useEffect(() => {
 			if (mergedTheme === undefined) {
 				// eslint-disable-next-line no-console
-				console.warn(/** @swc-de-indent */ `
+				console.warn(/** #__DE-INDENT__ */ `
 					@fluentui/react-provider: FluentProvider does not have your "theme" defined. Make sure that your top-level FluentProvider has set a \`theme\` prop or you're setting the theme in your child FluentProvider.
 				`);
 			}
