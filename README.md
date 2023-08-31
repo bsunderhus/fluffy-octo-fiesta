@@ -1,4 +1,4 @@
-## `@bsunderhus/swc-plugin-de-indent-template-literal`
+## `swc-plugin-de-indent-template-literal`
 
 ## Usage
 
@@ -34,7 +34,7 @@ someFunction();
 #### Setup
 
 ```sh
-npm install --save-dev @bsunderhus/swc-plugin-de-indent-template-literal @swc/core
+npm install --save-dev swc-plugin-de-indent-template-literal @swc/core
 ```
 
 Then update your `.swcrc` file like below:
@@ -43,7 +43,7 @@ Then update your `.swcrc` file like below:
 {
   "jsc": {
     "experimental": {
-      "plugins": ["@bsunderhus/swc-plugin-de-indent-template-literal"]
+      "plugins": [["swc-plugin-de-indent-template-literal", {}]]
     }
   }
 }
@@ -67,7 +67,7 @@ example:
     "experimental": {
       "plugins": [
         [
-          "@bsunderhus/swc-plugin-de-indent-template-literal",
+          "swc-plugin-de-indent-template-literal",
           {
             "indentStyle": "tab"
           }
@@ -94,7 +94,7 @@ example:
     "experimental": {
       "plugins": [
         [
-          "@bsunderhus/swc-plugin-de-indent-template-literal",
+          "swc-plugin-de-indent-template-literal",
           {
             "tag": "de-indent"
           }
