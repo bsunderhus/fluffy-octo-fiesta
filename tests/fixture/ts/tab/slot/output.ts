@@ -1,4 +1,4 @@
-import { AsIntrinsicElement, SlotComponentType, SlotRenderFunction, SlotShorthandValue, UnknownSlotProps } from "./types";
+import type { AsIntrinsicElement, SlotComponentType, SlotRenderFunction, SlotShorthandValue, UnknownSlotProps } from "./types";
 import * as React from "react";
 import { SLOT_ELEMENT_TYPE_SYMBOL, SLOT_RENDER_FUNCTION_SYMBOL } from "./constants";
 export type SlotOptions<Props extends UnknownSlotProps> = {

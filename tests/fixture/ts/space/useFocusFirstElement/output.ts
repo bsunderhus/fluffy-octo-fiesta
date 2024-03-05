@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useFocusFinders } from "@fluentui/react-tabster";
 import { useFluent_unstable } from "@fluentui/react-shared-contexts";
-import { DialogSurfaceElement } from "../DialogSurface";
-import { DialogModalType } from "../Dialog";
+import type { DialogSurfaceElement } from "../DialogSurface";
+import type { DialogModalType } from "../Dialog";
 /**
  * Focus first element on content when dialog is opened,
  */ export function useFocusFirstElement(open: boolean, modalType: DialogModalType) {

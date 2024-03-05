@@ -4,7 +4,7 @@ use swc_core::{
     common::comments::{CommentKind, Comments},
     ecma::{
         ast::Tpl,
-        visit::{as_folder, Folder, VisitMut, VisitMutWith},
+        visit::{as_folder, Folder, VisitMut},
     },
 };
 

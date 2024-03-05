@@ -1,6 +1,6 @@
 import { useId, useIsomorphicLayoutEffect } from "@fluentui/react-utilities";
 import * as React from "react";
-import { FluentProviderState } from "./FluentProvider.types";
+import type { FluentProviderState } from "./FluentProvider.types";
 import { fluentProviderClassNames } from "./useFluentProviderStyles.styles";
 const createStyleTag = (target: Document | undefined, elementAttributes: Record<string, string>)=>{
 		if (!target) {

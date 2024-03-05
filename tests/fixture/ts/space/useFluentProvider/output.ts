@@ -1,11 +1,11 @@
 import { useRenderer_unstable } from "@griffel/react";
 import { useFocusVisible } from "@fluentui/react-tabster";
 import { ThemeContext_unstable as ThemeContext, useFluent_unstable as useFluent, useOverrides_unstable as useOverrides, CustomStyleHooksContext_unstable as CustomStyleHooksContext } from "@fluentui/react-shared-contexts";
-import { CustomStyleHooksContextValue_unstable as CustomStyleHooksContextValue, ThemeContextValue_unstable as ThemeContextValue } from "@fluentui/react-shared-contexts";
+import type { CustomStyleHooksContextValue_unstable as CustomStyleHooksContextValue, ThemeContextValue_unstable as ThemeContextValue } from "@fluentui/react-shared-contexts";
 import { getNativeElementProps, useMergedRefs, slot } from "@fluentui/react-utilities";
 import * as React from "react";
 import { useFluentProviderThemeStyleTag } from "./useFluentProviderThemeStyleTag";
-import { FluentProviderProps, FluentProviderState } from "./FluentProvider.types";
+import type { FluentProviderProps, FluentProviderState } from "./FluentProvider.types";
 /**
  * Create the state required to render FluentProvider.
  *

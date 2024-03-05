@@ -3,7 +3,7 @@ import { useControllableState, useEventCallback, useId, useIsomorphicLayoutEffec
 import { useHasParentContext } from "@fluentui/react-context-selector";
 import { useDisableBodyScroll, useFocusFirstElement } from "../../utils";
 import { DialogContext } from "../../contexts";
-import { DialogOpenChangeData, DialogProps, DialogState } from "./Dialog.types";
+import type { DialogOpenChangeData, DialogProps, DialogState } from "./Dialog.types";
 import { useModalAttributes } from "@fluentui/react-tabster";
 /**
  * Create the state required to render Dialog.

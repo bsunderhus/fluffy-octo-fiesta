@@ -1,9 +1,9 @@
 import { hide as hideMiddleware, arrow as arrowMiddleware } from "@floating-ui/dom";
-import { Middleware, Strategy } from "@floating-ui/dom";
+import type { Middleware, Strategy } from "@floating-ui/dom";
 import { useFluent_unstable as useFluent } from "@fluentui/react-shared-contexts";
 import { canUseDOM, useEventCallback, useIsomorphicLayoutEffect } from "@fluentui/react-utilities";
 import * as React from "react";
-import { PositioningOptions, PositioningProps, PositionManager, TargetElement, UsePositioningReturn } from "./types";
+import type { PositioningOptions, PositioningProps, PositionManager, TargetElement, UsePositioningReturn } from "./types";
 import { useCallbackRef, toFloatingUIPlacement, hasAutofocusFilter, hasScrollParent, normalizeAutoSize } from "./utils";
 import { shift as shiftMiddleware, flip as flipMiddleware, coverTarget as coverTargetMiddleware, maxSize as maxSizeMiddleware, resetMaxSize as resetMaxSizeMiddleware, offset as offsetMiddleware, intersecting as intersectingMiddleware } from "./middleware";
 import { createPositionManager } from "./createPositionManager";
